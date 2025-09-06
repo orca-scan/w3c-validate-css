@@ -450,7 +450,7 @@ async function validate(target, cfg) {
         var cyan = chalk.cyan;
         var bold = chalk.bold;
         console.log('');
-        console.log(bold(cyan('w3c validating ' + files.length + ' files in ' + target)));
+        console.log(bold(cyan('w3c validating ' + files.length + ' CSS files in ' + target)));
         console.log('');
     }
 

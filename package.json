@@ -1,6 +1,6 @@
 {
   "name": "w3c-validate-css",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Validate CSS offline using the official W3C css-validator.jar",
   "type": "commonjs",
   "main": "index.js",
