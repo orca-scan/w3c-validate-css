@@ -37,7 +37,7 @@ Flag             | Alias | Value                    | Default | Description
 `--deprecations` | `-d`  |                          | `false` | Include deprecation warnings
 `--errors-only`  | `-e`  |                          | `false` | Show only errors; ignore warnings
 `--json`         |       |                          | `false` | Output JSON summary
-`--tolerate`     |       | `"prop1,prop2"`          | `""`    | Downgrade listed props from errors to warnings
+`--tolerate`     |       | `"prop1,prop2"`          | `""`    | Downgrade properties from errors to warnings
 
 ## Node module
 
