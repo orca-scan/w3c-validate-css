@@ -109,3 +109,7 @@ To keep results:
           name: css-report
           path: css-report.json
 ```
+
+## License
+
+[MIT License](LICENSE) © Orca Scan - a [barcode app](https://orcascan.com) with simple [barcode tracking APIs](https://orcascan.com/guides?tag=for-developers).
