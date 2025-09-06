@@ -6,6 +6,8 @@ A simple CSS validator for Node and the CLI that uses the official W3C validator
 
 ## CLI
 
+The easiest way to use this is from the cli using `npx`, for example:
+
 ```bash
 # validate a single file
 npx w3c-validate-css --target dist/styles.css
@@ -14,7 +16,7 @@ npx w3c-validate-css --target dist/styles.css
 npx w3c-validate-css --target dist/
 ```
 
-Example output:
+Output:
 
 ```bash
 ✗ dist/styles.css
