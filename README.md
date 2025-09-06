@@ -1,7 +1,7 @@
 # w3c-validate-css
 
-[![license](https://img.shields.io/github/license/orca-scan/w3c-validate-css)](https://github.com/orca-scan/w3c-validate-css/blob/master/LICENSE)
 [![Tests](https://github.com/orca-scan/w3c-validate-css/actions/workflows/ci.yml/badge.svg)](https://github.com/orca-scan/w3c-validate-css/actions/workflows/ci.yml)
+[![license](https://img.shields.io/github/license/orca-scan/w3c-validate-css)](https://github.com/orca-scan/w3c-validate-css/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/w3c-validate-css)](https://www.npmjs.com/package/w3c-validate-css)
 
 A simple CSS validator for Node and the CLI that uses the official W3C validator _(offline)_.
