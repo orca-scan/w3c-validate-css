@@ -6,18 +6,21 @@
 
 A simple CSS validator for Node and the CLI that uses the official W3C validator _(offline)_.
 
-**Why?** modern web apps use build tools to merge/minify CSS, which can introduce bugs. w3c-validate-css runs locally using the official W3C validator JAR. It console logs concise errors with line numbers, using the same rules as the W3C online validator, but entirely offline.
+**Why?** **Why?** modern build tools can introduce CSS bugs that slip into production. w3c-validate-css runs locally with the official W3C validator JAR and prints concise, clickable errors with line numbers — the same rules as the online validator, but entirely offline.
 
 ## CLI
 
 The easiest way to use this is from the cli using `npx`, for example:
 
 ```bash
-# validate a single file
+# Validate a single file
 npx w3c-validate-css --target dist/styles.css
 
-# validate a folder, treat pointer-events as tolerated, fail only on errors
-npx w3c-validate-css --target dist/css -e --tolerate "pointer-events"
+# Validate a folder, fail only on errors, tolerate a property
+npx w3c-validate-css --target dist/css --errors-only --tolerate "pointer-events"
+
+# Validate using the SVG profile (recognizes pointer-events)
+npx w3c-validate-css --target dist/css --profile svg
 ```
 
 Output:
@@ -34,7 +37,7 @@ Exits with code 1 if validation fails.
 ### options
 
 Flag             | Alias | Value                    | Default | Description
-:----------------|:------|:-------------------------|:--------|:--------------------------------------------------
+:----------------|:------|:-------------------------|:--------|:--------------------------------------------
 `--target`       | `-t`  | `<path>`                 |         | File or folder to validate **(required)**
 `--profile`      | `-p`  | `css3\|css21\|css1\|svg` | `css3`  | Validation profile
 `--warnings`     | `-w`  | `0\|1\|2`                | `2`     | Warning level: `0` none, `1` normal, `2` all
@@ -52,21 +55,18 @@ npm i w3c-validate-css --save-dev
 ```js
 var validateCss = require('w3c-validate-css');
 
-validateCss.validate('dist/', {
+validateCss('dist/', {
   profile: 'css3',
   warningLevel: 2,
   showDeprecations: false,
   errorsOnly: false,
-  color: true,
   json: false
 })
 .then(function (summary) {
-  if (summary.failed > 0) {
-      process.exitCode = 1;
-  }
+  if (summary.failed > 0) process.exitCode = 1;
 })
 .catch(function (err) {
-  console.error('validate-css error:', err.message || String(err));
+  console.error('w3c-validate-css error:', err && err.message ? err.message : String(err));
 });
 ```
 
@@ -101,12 +101,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: npx w3c-validate-css --target dist/
-```
-
-To keep results:
-
-```yaml
       - run: npx w3c-validate-css --target dist/ --json > css-report.json
       - uses: actions/upload-artifact@v4
         with:
