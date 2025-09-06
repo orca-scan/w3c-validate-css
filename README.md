@@ -33,11 +33,11 @@ Flag             | Alias | Value                        | Default | Description
 :----------------|:------|:-----------------------------|:--------|:--------------------------------------------------
 `--target`       | `-t`  | `<path>`                     |         | File or folder to validate **(required)**
 `--profile`      | `-p`  | `css3|css21|css1|svg|mobile` | `css3`  | Validation profile (`svg` allows `pointer-events`)
-`--warnings`     | `-w`  | `0|1|2`                      | `2`     | Warning level: `0` none, `1` normal, `2` all
+`--warnings`     | `-w`  | `0\|1\|2`                    | `2`     | Warning level: `0` none, `1` normal, `2` all
 `--deprecations` | `-d`  |                              | `false` | Include deprecation warnings
 `--errors-only`  | `-e`  |                              | `false` | Show only errors; ignore warnings
 `--json`         |       |                              | `false` | Output JSON summary
-`--tolerate`     |       | `"prop1,prop2“`              | `""`    | Downgrade listed props from errors to warnings
+`--tolerate`     |       | `"prop1,prop2"`              | `""`    | Downgrade listed props from errors to warnings
 
 ## Node module
 
