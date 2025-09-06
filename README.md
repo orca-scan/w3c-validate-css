@@ -6,7 +6,7 @@
 
 A simple CSS validator for Node and the CLI that uses the official W3C validator _(offline)_.
 
-**Why?** modern build tools can introduce CSS bugs that slip into production. w3c-validate-css runs locally with the official W3C validator JAR and prints concise, clickable errors with line numbers — the same rules as the online validator, but entirely offline.
+**Why?** modern build tools can introduce CSS bugs that slip into production. w3c-validate-css runs locally with the official W3C validator JAR and prints concise, clickable errors with line numbers using the same rules as the online validator, but entirely offline.
 
 ## CLI
 
