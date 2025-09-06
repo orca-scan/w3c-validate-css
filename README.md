@@ -1,5 +1,9 @@
 # w3c-validate-css
 
+[![license](https://img.shields.io/github/license/orca-scan/w3c-validate-css)](https://github.com/orca-scan/w3c-validate-css/blob/master/LICENSE)
+[![Tests](https://github.com/orca-scan/w3c-validate-css/actions/workflows/ci.yml/badge.svg)](https://github.com/orca-scan/w3c-validate-css/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/w3c-validate-css)](https://www.npmjs.com/package/w3c-validate-css)
+
 A simple CSS validator for Node and the CLI that uses the official W3C validator _(offline)_.
 
 **Why?** modern web apps use build tools to merge/minify CSS, which can introduce bugs. w3c-validate-css runs locally using the official W3C validator JAR. It console logs concise errors with line numbers, using the same rules as the W3C online validator, but entirely offline.
