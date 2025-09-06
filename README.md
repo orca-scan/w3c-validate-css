@@ -12,8 +12,8 @@ The easiest way to use this is from the cli using `npx`, for example:
 # validate a single file
 npx w3c-validate-css --target dist/styles.css
 
-# validate a whole folder
-npx w3c-validate-css --target dist/
+# validate a folder, treat pointer-events as tolerated, fail only on errors
+npx w3c-validate-css --target dist/css -e --tolerate "pointer-events"
 ```
 
 Output:
@@ -38,13 +38,6 @@ Flag             | Alias | Value                        | Default | Description
 `--errors-only`  | `-e`  |                              | `false` | Show only errors; ignore warnings
 `--json`         |       |                              | `false` | Output JSON summary
 `--tolerate`     |       | `"prop1,prop2“`              | `""`    | Downgrade listed props from errors to warnings
-
-**Example**
-
-```bash
-# validate a folder, treat pointer-events as tolerated, fail only on errors
-npx w3c-validate-css -t dist/css -e --tolerate "pointer-events"
-```
 
 ## Node module
 
