@@ -32,7 +32,7 @@ Exits with code 1 if validation fails.
 Flag             | Alias | Value                    | Default | Description
 :----------------|:------|:-------------------------|:--------|:--------------------------------------------------
 `--target`       | `-t`  | `<path>`                 |         | File or folder to validate **(required)**
-`--profile`      | `-p`  | `css3\|css21\|css1\|svg` | `css3`  | Validation profile (`svg` allows `pointer-events`)
+`--profile`      | `-p`  | `css3\|css21\|css1\|svg` | `css3`  | Validation profile
 `--warnings`     | `-w`  | `0\|1\|2`                | `2`     | Warning level: `0` none, `1` normal, `2` all
 `--deprecations` | `-d`  |                          | `false` | Include deprecation warnings
 `--errors-only`  | `-e`  |                          | `false` | Show only errors; ignore warnings
