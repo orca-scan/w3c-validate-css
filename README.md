@@ -4,31 +4,25 @@
 [![license](https://img.shields.io/github/license/orca-scan/w3c-validate-css)](https://github.com/orca-scan/w3c-validate-css/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/w3c-validate-css)](https://www.npmjs.com/package/w3c-validate-css)
 
-A simple CSS validator for Node and the CLI that uses the official W3C validator _(offline)_.
+Validate CSS offline using the official W3C css-validator.jar
 
-**Why?** modern build tools can introduce CSS bugs that slip into production. w3c-validate-css runs locally with the official W3C validator JAR and prints concise, clickable errors with line numbers using the same rules as the online validator, but entirely offline.
+**Why?** modern build tools can introduce CSS bugs. w3c-validate-css runs locally and prints concise, clickable errors with line numbers using the same rules as the online W3C validator, but entirely offline.
 
 ## CLI
 
 The easiest way to use this is from the cli using `npx`, for example:
 
 ```bash
-# Validate a single file
-npx w3c-validate-css --target dist/styles.css
-
 # Validate a folder, fail only on errors, tolerate a property
 npx w3c-validate-css --target dist/css --errors-only --tolerate "pointer-events"
-
-# Validate using the SVG profile (recognizes pointer-events)
-npx w3c-validate-css --target dist/css --profile svg
 ```
 
 Output:
 
 ```bash
-✗ dist/styles.css
-  dist/styles.css:14:8 - Parse Error: Declaration dropped
-  dist/styles.css:45 - Unknown pseudo-element or pseudo-class :where()
+✗ dist/app.css
+    dist/app.css:14:8 - Parse Error: Declaration dropped
+    dist/app.css:45 - Unknown pseudo-element or pseudo-class :where()
 ✓ dist/reset.css
 ```
 
