@@ -11,6 +11,7 @@ var child = require('child_process');
 var chalk = require('chalk');
 var glob = require('glob');
 var minimist = require('minimist');
+var cheerio = require('cheerio');
 
 /* single, deterministic cache path in os temp */
 var CACHE_DIR = path.join(os.tmpdir(), 'w3c-validate-css');
@@ -121,6 +122,11 @@ async function resolveJarPath() {
  * @returns {Promise<string[]>} - resolves array of absolute css file paths
  */
 async function expandFiles(target) {
+
+    if (target.startsWith('http')) {
+        return await expandCssFromUrl(target);
+    }
+    
     var abs = path.resolve(target);
 
     var st;
@@ -152,6 +158,87 @@ async function expandFiles(target) {
             resolve(out);
         });
     });
+}
+
+/**
+ * Download css files linked from a single page url into a temp folder
+ * @param {string} pageUrl - html page url
+ * @returns {Promise<string[]>} - resolves absolute temp css file paths
+ */
+async function expandCssFromUrl(pageUrl) {
+
+    var htmlRes = await fetch(pageUrl, {
+        redirect: 'follow',
+        headers: { 'User-Agent': 'Mozilla/5.0 (node)' }
+    });
+
+    if (!htmlRes.ok) {
+        throw new Error('request failed ' + htmlRes.status + ' ' + pageUrl);
+    }
+
+    var html = await htmlRes.text();
+    var $ = cheerio.load(html);
+
+    var seen = Object.create(null);
+    var cssUrls = [];
+
+    $('link[rel="stylesheet"][href]').each(function () {
+        var href = $(this).attr('href');
+
+        if (!href || /^data:/i.test(href)) {
+            return;
+        }
+
+        var abs;
+        try {
+            abs = String(new URL(href, pageUrl).href);
+        } catch (e) {
+            return;
+        }
+
+        if (!/\.css(\?|#|$)/i.test(abs)) {
+            return;
+        }
+
+        if (!Object.prototype.hasOwnProperty.call(seen, abs)) {
+            seen[abs] = true;
+            cssUrls.push(abs);
+        }
+    });
+
+    var dir = path.join(os.tmpdir(), 'w3c-validate-css', 'site-' + Date.now());
+    ensureDir(dir);
+
+    var files = [];
+
+    for (var i = 0; i < cssUrls.length; i++) {
+        var href = cssUrls[i];
+        var name = href.replace(/^https?:\/\//i, '').replace(/[?#].*$/, '');
+        name = name.replace(/\/+/g, '/').replace(/[^a-z0-9/._-]+/gi, '_').replace(/\//g, '_');
+        if (!name) { name = 'style.css'; }
+        if (!/\.css$/i.test(name)) { name += '.css'; }
+
+        var dest = path.join(dir, name);
+        var tmp = dest + '.part';
+
+        var cssRes = await fetch(href, {
+            redirect: 'follow',
+            headers: { 'User-Agent': 'Mozilla/5.0 (node)', 'Accept': 'text/css,*/*;q=0.1' }
+        });
+
+        if (!cssRes.ok) {
+            throw new Error('css request failed ' + cssRes.status + ' ' + href);
+        }
+
+        var raw = await cssRes.text();
+        var pretty = unminifyCss(raw);
+
+        await fsp.writeFile(tmp, pretty, 'utf8');
+        fs.renameSync(tmp, dest);
+        files.push(dest);
+    }
+
+    return files;
 }
 
 /**
@@ -499,6 +586,48 @@ async function validateFileRaw(file, cfg) {
         errors: issues.errors,
         warnings: issues.warnings
     };
+}
+
+/**
+ * Very small css unminifier
+ * @param {string} css - raw css
+ * @returns {string} - css with basic newlines and indentation
+ */
+function unminifyCss(css) {
+    var s = String(css || '');
+
+    s = s.replace(/\r\n/g, '\n');
+
+    /* add line breaks around structure */
+    s = s.replace(/\/\*[\s\S]*?\*\//g, function (m) {
+        return '\n' + m + '\n';
+    });
+    s = s.replace(/\s*{\s*/g, ' {\n');
+    s = s.replace(/\s*}\s*/g, '\n}\n');
+    s = s.replace(/;\s*/g, ';\n');
+    s = s.replace(/,\s*/g, ', ');
+
+    /* basic indentation */
+    var out = [];
+    var lines = s.split('\n');
+    var indent = 0;
+
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line) { continue; }
+
+        if (line.charAt(0) === '}') {
+            indent = Math.max(0, indent - 1);
+        }
+
+        out.push(new Array((indent * 4) + 1).join(' ') + line);
+
+        if (line.slice(-1) === '{') {
+            indent++;
+        }
+    }
+
+    return out.join('\n') + '\n';
 }
 
 /* cli vs module */
