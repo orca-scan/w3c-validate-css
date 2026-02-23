@@ -15,6 +15,9 @@ The easiest way to use this is from the cli using `npx`, for example:
 ```bash
 # Validate a folder, fail only on errors, tolerate a property
 npx w3c-validate-css --target dist/css --errors-only --tolerate "pointer-events"
+
+# Validate CSS in a hosted webpage, fail only on errors, tolerate a property
+npx w3c-validate-css --target http://orcascan.com --errors-only --tolerate "pointer-events"
 ```
 
 Output:
