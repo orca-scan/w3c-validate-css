@@ -3,7 +3,7 @@ var path = require('path');
 var child = require('child_process');
 var validateCss = require('../index.js');
 
-describe('w3c-validate-css: module validation (async)', function () {
+describe('w3c-validate-css: file', function () {
     var cssDir = path.join(__dirname, 'css');
     var skipAll = false;
 
